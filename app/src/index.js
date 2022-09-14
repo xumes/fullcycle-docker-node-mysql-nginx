@@ -23,9 +23,8 @@ mysqlPool.getConnection((err, connection) => {
     }
 
     connection.query(sqlInsert, () => {
-        console.log("terminei de inserrir, uha")
+        console.log("registro inserido com sucesso")
     })
-    console.log("pronto, agora vou fechar a conexao com o banco")
     connection.release()
 })
 
@@ -33,6 +32,8 @@ const app = express()
 
 app.get('/', (req, res) => {
     const sql = 'SELECT * FROM people'
+
+    console.log(__dirname)
 
     mysqlPool.getConnection((err, connection) => {
         if (err) {
@@ -44,13 +45,11 @@ app.get('/', (req, res) => {
             if (err) {
                 res.status(500).send(err)
             }
-    
-            res.status(200).send(result)
+
+            res.sendFile(__dirname + "/index.html");
         })
-        console.log("pronto, agora vou fechar a conexao com o banco")
         connection.release()
     })
-    // res.send(sql)
 })
 
 app.listen(3000, () => {
