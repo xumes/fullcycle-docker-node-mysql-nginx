@@ -7,12 +7,13 @@ const config = {
     password: 'root',
     database: 'fullcycle'
 }
+const createTable = `CREATE TABLE IF NOT EXISTS people(id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255) NOT NULL) ENGINE=INNODB;`
 
 const faker = fakerJs.faker
 const name = faker.name.fullName()
 
 console.log("o nome que eu vou inserir é", name)
-const sqlInsert = `INSERT INTO people (name) VALUES ('${name}')`
+const sqlInsert = `INSERT INTO people (name) VALUES ('${name}');`
 
 const mysqlPool = mysql.createPool(config)
 
@@ -22,16 +23,19 @@ mysqlPool.getConnection((err, connection) => {
         console.log("Error getting mysql pool connection" + err)
     }
 
-    connection.query(sqlInsert, () => {
-        console.log("registro inserido com sucesso")
+    connection.query(createTable, () => {
+        connection.query(sqlInsert, () => {
+            console.log("registro inserido com sucesso")
+        })
     })
+
     connection.release()
 })
 
 const app = express()
 
 app.get('/', (req, res) => {
-    const sql = 'SELECT * FROM people'
+    const sql = 'SELECT * FROM people;'
 
     console.log(__dirname)
 
