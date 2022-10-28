@@ -46,11 +46,38 @@ app.get('/', (req, res) => {
                 res.status(500).send(err)
             }
 
-            res.sendFile(__dirname + "/index.html");
+            console.log("result", result)
+
+            res.send(buildHtml(result));
         })
         connection.release()
     })
 })
+
+const buildHtml = (data) => {
+
+    const lineItems = data.map(d => {
+        console.log(`item: ${d}`)
+        return `<li>${d.name}</li>`
+    })
+    return `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+            <meta charset="UTF-8">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Fullcycle</title>
+        </head>
+        <body>
+                <h1>Full Cycle Rocks!</h1>
+        
+                <ul>${lineItems}</ul>
+        
+        </body>
+        </html>
+    `
+}
 
 app.listen(3000, () => {
     console.log('Server is running at http://localhost:3000')
