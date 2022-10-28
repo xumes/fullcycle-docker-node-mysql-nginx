@@ -5,6 +5,7 @@ services:
     build:
       context: .
     container_name: app
+    entrypoint: dockerize -wait tcp://db:3306 -timeout 20s docker-entrypoint.sh
     volumes:
       - ./app:/app
     ports:
