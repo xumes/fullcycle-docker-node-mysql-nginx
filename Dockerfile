@@ -9,12 +9,4 @@ RUN wget https://github.com/jwilder/dockerize/releases/download/$DOCKERIZE_VERSI
     && tar -C /usr/local/bin -xzvf dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz \
     && rm dockerize-linux-amd64-$DOCKERIZE_VERSION.tar.gz
 
-COPY /app/package.json .
-
-RUN npm install
-
-COPY /app/src /app/src
-
 EXPOSE 3000
-
-CMD ["node", "src/index.js"]
